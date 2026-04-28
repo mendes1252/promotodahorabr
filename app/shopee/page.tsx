@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import { Metadata } from 'next';
 import ProductListing from '@/components/sections/ProductListing';
 import { createClient } from '@/lib/supabase/server';
@@ -18,6 +20,16 @@ export default async function ShopeePage() {
     .eq('platform', 'shopee')
     .eq('active', true)
     .order('created_at', { ascending: false });
+
+  let categories = [];
+  try {
+    const catsPath = path.join(process.cwd(), 'data', 'categories.json');
+    if (fs.existsSync(catsPath)) {
+      categories = JSON.parse(fs.readFileSync(catsPath, 'utf8'));
+    }
+  } catch (e) {
+    console.error('Error loading categories:', e);
+  }
 
   const formattedProducts: Product[] = (products || []).map(p => ({
     id: p.id.toString(),
@@ -41,7 +53,7 @@ export default async function ShopeePage() {
           Ofertas <span style={{ color: '#EE4D2D' }}>Shopee</span>
         </h1>
       </div>
-      <ProductListing products={formattedProducts} platform="shopee" />
+      <ProductListing products={formattedProducts} categories={categories} platform="shopee" />
     </div>
   );
 }
