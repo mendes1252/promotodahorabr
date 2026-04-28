@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     const supabase = createClient();
     
     // Mapeando dados do formato camelCase (Frontend) para snake_case (Banco de Dados)
-    const productData: any = {
+    const productData: Record<string, unknown> = {
       name: newProduct.name,
       description: newProduct.description,
       image_url: newProduct.imageUrl,
