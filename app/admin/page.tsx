@@ -59,6 +59,8 @@ export default function AdminPage() {
   const [templateIndex, setTemplateIndex] = useState(0);
   const [customMessage, setCustomMessage] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [whatsappLink, setWhatsappLink] = useState('');
+  const [isSavingSettings, setIsSavingSettings] = useState(false);
 
   useEffect(() => {
     fetch('/api/admin/categories')
@@ -67,6 +69,14 @@ export default function AdminPage() {
         setCategories(data);
         if (data.length > 0) {
           setFormData(prev => ({ ...prev, category: data[0].id }));
+        }
+      });
+
+    fetch('/api/admin/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.whatsappLink) {
+          setWhatsappLink(data.whatsappLink);
         }
       });
   }, []);
@@ -251,8 +261,55 @@ ${desc}
     }
   };
 
+  const handleSaveSettings = async () => {
+    setIsSavingSettings(true);
+    try {
+      const res = await fetch('/api/admin/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ whatsappLink }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert('Configurações salvas com sucesso!');
+      } else {
+        alert('Erro ao salvar configurações.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Erro de conexão ao salvar configurações.');
+    } finally {
+      setIsSavingSettings(false);
+    }
+  };
+
   return (
     <div className={styles.adminContainer}>
+      {/* Configurações Globais */}
+      <div className={styles.panel}>
+        <h2 className={styles.title}>Configurações do Site</h2>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Link do Grupo VIP (WhatsApp)</label>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <input 
+              className={styles.input} 
+              value={whatsappLink} 
+              onChange={e => setWhatsappLink(e.target.value)} 
+              placeholder="Ex: https://chat.whatsapp.com/..." 
+              style={{ flex: 1 }}
+            />
+            <button 
+              className={styles.submitBtn} 
+              style={{ width: 'auto', padding: '0 24px' }}
+              onClick={handleSaveSettings}
+              disabled={isSavingSettings}
+            >
+              {isSavingSettings ? 'Salvando...' : 'Salvar Link'}
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Formulário */}
       <div className={styles.panel}>
         <h2 className={styles.title}>1. Cadastro da Oferta</h2>

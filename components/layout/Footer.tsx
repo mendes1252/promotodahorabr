@@ -1,8 +1,23 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Footer.module.css';
+import fs from 'fs';
+import path from 'path';
 
-export default function Footer() {
+export default async function Footer() {
+  let whatsappLink = '#';
+  try {
+    const settingsPath = path.join(process.cwd(), 'data', 'settings.json');
+    if (fs.existsSync(settingsPath)) {
+      const data = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+      if (data.whatsappLink) {
+        whatsappLink = data.whatsappLink;
+      }
+    }
+  } catch (error) {
+    console.error('Error loading settings for footer:', error);
+  }
+
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
@@ -36,7 +51,7 @@ export default function Footer() {
         <div className={styles.vipSection}>
           <h3 className={styles.linksTitle}>Ofertas Exclusivas</h3>
           <p className={styles.vipText}>Não perca nenhuma promoção relâmpago! Entre no nosso grupo VIP.</p>
-          <a href="#" className={styles.vipButton}>Acesse nosso grupo VIP</a>
+          <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className={styles.vipButton}>Acesse nosso grupo VIP</a>
         </div>
       </div>
       
