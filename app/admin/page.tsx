@@ -32,8 +32,14 @@ const ICON_BANK = [
   { name: 'Watch', icon: <Watch size={20} /> }
 ];
 
+interface Category {
+  id: string;
+  label: string;
+  iconName: string;
+}
+
 export default function AdminPage() {
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [showNewCat, setShowNewCat] = useState(false);
   const [newCatName, setNewCatName] = useState('');
   const [newCatIcon, setNewCatIcon] = useState('Star');
@@ -89,6 +95,7 @@ export default function AdminPage() {
         alert(data.message);
       }
     } catch (e) {
+      console.error(e);
       alert('Erro ao salvar categoria');
     }
   };
@@ -182,6 +189,7 @@ ${desc}
     return templates[index];
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setCustomMessage(getTemplate(templateIndex));
   }, [formData, templateIndex]);

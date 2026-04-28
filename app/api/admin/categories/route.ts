@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     }
     
     // Verifica se já existe
-    if (categories.find((c: any) => c.id === newCategory.id)) {
+    if (categories.find((c: { id: string }) => c.id === newCategory.id)) {
       return NextResponse.json({ success: false, message: 'Categoria já existe!' }, { status: 400 });
     }
     

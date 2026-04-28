@@ -31,8 +31,9 @@ export async function POST(request: Request) {
     }
     
     return NextResponse.json({ success: true, message: 'Produto salvo no banco de dados com sucesso!' });
-  } catch (error: any) {
-    console.error('Erro ao salvar produto:', error);
-    return NextResponse.json({ success: false, message: error?.message || 'Erro ao salvar produto' }, { status: 500 });
+  } catch (error: unknown) {
+    const err = error as Error;
+    console.error('Erro ao salvar produto:', err);
+    return NextResponse.json({ success: false, message: err?.message || 'Erro ao salvar produto' }, { status: 500 });
   }
 }

@@ -7,7 +7,7 @@ import styles from './ProductListing.module.css';
 
 interface ProductListingProps {
   products: Product[];
-  categories: any[];
+  categories: { id: string; label: string; iconName: string }[];
   platform?: 'amazon' | 'shopee' | 'mercadolivre';
 }
 
