@@ -1,0 +1,11 @@
+[
+  { "id": "eletronicos", "label": "Eletrônicos", "iconName": "Smartphone" },
+  { "id": "moda", "label": "Moda", "iconName": "Shirt" },
+  { "id": "casa", "label": "Casa", "iconName": "Home" },
+  { "id": "cama-mesa-banho", "label": "Cama, Mesa e Banho", "iconName": "BedDouble" },
+  { "id": "saude", "label": "Saúde e Bem Estar", "iconName": "HeartPulse" },
+  { "id": "beleza", "label": "Beleza", "iconName": "Sparkles" },
+  { "id": "kids", "label": "Kids", "iconName": "Baby" },
+  { "id": "ferramentas", "label": "Ferramentas", "iconName": "Wrench" },
+  { "id": "livros", "label": "Livros", "iconName": "BookOpen" }
+]

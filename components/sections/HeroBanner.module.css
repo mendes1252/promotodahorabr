@@ -1,0 +1,162 @@
+.hero {
+  background-color: var(--color-white);
+  padding: 40px 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.badge {
+  background: rgba(0, 128, 55, 0.1);
+  color: var(--color-green);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--color-blue);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.highlight {
+  background: linear-gradient(90deg, var(--color-green), #00c652);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: var(--text-dark);
+  opacity: 0.8;
+  max-width: 480px;
+  line-height: 1.5;
+}
+
+.cta {
+  background: linear-gradient(90deg, var(--color-green), #00c652);
+  color: var(--color-white);
+  font-size: 18px;
+  font-weight: 700;
+  padding: 16px 40px;
+  border-radius: 50px;
+  margin-top: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0, 166, 80, 0.3);
+}
+
+.cta:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 25px rgba(0, 166, 80, 0.4);
+}
+
+.imageWrapper {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  max-width: 400px; /* Constrain so icons cluster well */
+}
+
+.mascotImage {
+  max-width: 100%;
+  height: auto;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.1));
+  z-index: 2;
+  position: relative;
+}
+
+/* Floating Elements around Mascot */
+.floatingElements {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.iconBox {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; /* Make them more circular like confetti/bubbles */
+  padding: 12px;
+  background: white;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  animation: float 6s ease-in-out infinite;
+}
+
+.iconBox.ml { top: 10%; left: 15%; color: #FFE600; border: 2px solid #FFE600; animation-delay: 0s; }
+.iconBox.shopee { top: 25%; right: 5%; color: #EE4D2D; border: 2px solid #EE4D2D; animation-delay: 1s; }
+.iconBox.amazon { bottom: 20%; left: 5%; color: #007185; border: 2px solid #007185; animation-delay: 2s; }
+.iconBox.tag { top: 45%; left: 0%; color: var(--color-green); border: 2px solid var(--color-green); animation-delay: 1.5s; padding: 10px; }
+.iconBox.coin { bottom: 10%; right: 15%; color: #FFD700; border: 2px solid #FFD700; animation-delay: 3s; padding: 10px; }
+.iconBox.coupon { top: 5%; right: 25%; color: var(--color-purple); border: 2px solid var(--color-purple); animation-delay: 2.5s; padding: 10px; }
+.iconBox.gift { bottom: 35%; right: -5%; color: #E91E63; border: 2px solid #E91E63; animation-delay: 0.5s; padding: 10px; }
+.iconBox.party { bottom: 5%; left: 30%; color: #00BCD4; border: 2px solid #00BCD4; animation-delay: 4s; padding: 10px; }
+
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(8deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@media (min-width: 768px) {
+  .hero {
+    padding: 80px 16px;
+  }
+
+  .container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .content {
+    text-align: left;
+    align-items: flex-start;
+    flex: 1;
+  }
+
+  .title {
+    font-size: 56px;
+  }
+
+  .subtitle {
+    font-size: 20px;
+  }
+
+  .imageWrapper {
+    flex: 1;
+    justify-content: flex-end;
+    max-width: 500px; /* Slightly larger on desktop */
+  }
+}
