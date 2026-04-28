@@ -1,22 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Footer.module.css';
-import fs from 'fs';
-import path from 'path';
-
-export default async function Footer() {
-  let whatsappLink = '#';
-  try {
-    const settingsPath = path.join(process.cwd(), 'data', 'settings.json');
-    if (fs.existsSync(settingsPath)) {
-      const data = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
-      if (data.whatsappLink) {
-        whatsappLink = data.whatsappLink;
-      }
-    }
-  } catch (error) {
-    console.error('Error loading settings for footer:', error);
-  }
+export default function Footer() {
+  const whatsappLink = "https://chat.whatsapp.com/JsmGMPJ3iFSJQIPhagwfsE?mode=gi_t";
 
   return (
     <footer className={styles.footer}>
