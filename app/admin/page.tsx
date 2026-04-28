@@ -290,7 +290,7 @@ ${desc}
         <h2 className={styles.title}>Configurações do Site</h2>
         <div className={styles.formGroup}>
           <label className={styles.label}>Link do Grupo VIP (WhatsApp)</label>
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             <input 
               className={styles.input} 
               value={whatsappLink} 
