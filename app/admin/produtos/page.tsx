@@ -1,8 +1,9 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import styles from '../admin.module.css';
+import ProductActions from './ProductActions';
 
 export default async function ProdutosPage() {
   const supabase = createClient();
@@ -73,15 +74,7 @@ export default async function ProdutosPage() {
                     </span>
                   </td>
                   <td>
-                    <div className={styles.actionsCell}>
-                      {/* TODO: Implement Edit and Delete actions later */}
-                      <button className={styles.iconButton} title="Editar">
-                        <Pencil size={18} />
-                      </button>
-                      <button className={`${styles.iconButton} ${styles.delete}`} title="Excluir">
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
+                    <ProductActions id={p.id} />
                   </td>
                 </tr>
               ))

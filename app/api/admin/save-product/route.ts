@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     const supabase = createClient();
     
     // Mapeando dados do formato camelCase (Frontend) para snake_case (Banco de Dados)
-    const productData = {
+    const productData: any = {
       name: newProduct.name,
       description: newProduct.description,
       image_url: newProduct.imageUrl,
@@ -21,9 +21,22 @@ export async function POST(request: Request) {
       active: true
     };
     
-    const { error } = await supabase
-      .from('products')
-      .insert([productData]);
+    let error;
+
+    if (newProduct.id) {
+      // Atualizar produto existente
+      const { error: updateError } = await supabase
+        .from('products')
+        .update(productData)
+        .eq('id', newProduct.id);
+      error = updateError;
+    } else {
+      // Inserir novo
+      const { error: insertError } = await supabase
+        .from('products')
+        .insert([productData]);
+      error = insertError;
+    }
       
     if (error) {
       console.error('Supabase Error:', error);

@@ -38,6 +38,8 @@ interface Category {
   iconName: string;
 }
 
+import { createClient } from '@/lib/supabase/client';
+
 export default function AdminPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [showNewCat, setShowNewCat] = useState(false);
@@ -45,6 +47,7 @@ export default function AdminPage() {
   const [newCatIcon, setNewCatIcon] = useState('Star');
 
   const [formData, setFormData] = useState({
+    id: '',
     name: '',
     description: '',
     imageUrl: '',
@@ -79,6 +82,34 @@ export default function AdminPage() {
           setWhatsappLink(data.whatsappLink);
         }
       });
+
+    // Check if we are in Edit mode
+    const params = new URLSearchParams(window.location.search);
+    const editId = params.get('edit');
+    if (editId) {
+      const supabase = createClient();
+      supabase
+        .from('products')
+        .select('*')
+        .eq('id', editId)
+        .single()
+        .then(({ data, error }) => {
+          if (data && !error) {
+            setFormData({
+              id: data.id,
+              name: data.name,
+              description: data.description || '',
+              imageUrl: data.image_url || '',
+              platform: data.platform,
+              category: data.category,
+              priceOriginal: (data.price_original / 100).toFixed(2).replace('.', ','),
+              pricePromo: (data.price_promo / 100).toFixed(2).replace('.', ','),
+              affiliateUrl: data.affiliate_url || '',
+              featured: data.featured || false,
+            });
+          }
+        });
+    }
   }, []);
 
   const handleSaveCategory = async () => {
@@ -219,6 +250,7 @@ ${desc}
     const promo = parseFloat(formData.pricePromo.replace(',', '.')) || 0;
     
     return {
+      id: formData.id || undefined,
       name: formData.name,
       description: formData.description,
       imageUrl: formData.imageUrl,
@@ -249,7 +281,24 @@ ${desc}
       
       const data = await res.json();
       if (res.ok && data.success) {
-        alert('Produto salvo no site com sucesso!');
+        alert(formData.id ? 'Produto atualizado com sucesso!' : 'Produto salvo no site com sucesso!');
+        if (formData.id) {
+          window.location.href = '/admin/produtos';
+        } else {
+          // Clear form optionally, or just leave it
+          setFormData({
+            id: '',
+            name: '',
+            description: '',
+            imageUrl: '',
+            platform: 'amazon',
+            category: categories.length > 0 ? categories[0].id : '',
+            priceOriginal: '',
+            pricePromo: '',
+            affiliateUrl: '',
+            featured: false,
+          });
+        }
       } else {
         alert(`Erro ao salvar: ${data.message}`);
       }
@@ -312,7 +361,7 @@ ${desc}
 
       {/* Formulário */}
       <div className={styles.panel}>
-        <h2 className={styles.title}>1. Cadastro da Oferta</h2>
+        <h2 className={styles.title}>{formData.id ? '1. Editando Oferta' : '1. Cadastro da Oferta'}</h2>
         
         <div className={styles.formGroup}>
           <label className={styles.label}>Nome do Produto</label>
@@ -443,7 +492,7 @@ ${desc}
             onClick={handleSaveProduct} 
             disabled={isSaving || !formData.name || !formData.pricePromo}
           >
-            {isSaving ? 'Salvando...' : 'Salvar Oferta no Site Automaticamente'}
+            {isSaving ? 'Salvando...' : (formData.id ? 'Atualizar Oferta no Site' : 'Salvar Oferta no Site Automaticamente')}
           </button>
           <p style={{ marginTop: '12px', fontSize: '13px', color: '#666', lineHeight: '1.4' }}>
             Ao clicar em salvar, o produto será adicionado diretamente no Supabase e aparecerá instantaneamente na Home Page.
